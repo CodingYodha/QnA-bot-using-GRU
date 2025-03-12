@@ -14,3 +14,16 @@ with open("tokenizer.pkl", "rb") as f:
 MAX_LENGTH = 19  # Same as used during training
 VOCAB_SIZE = 10000  # Adjust if needed
 
+def generate_response(user_input):
+    # Preprocess input
+    user_seq = tokenizer.texts_to_sequences([user_input])
+    user_seq_padded = pad_sequences(user_seq, maxlen=MAX_LENGTH, padding='post')
+
+    # Generate prediction
+    predicted_seq = model.predict([user_seq_padded, np.zeros_like(user_seq_padded)])
+
+    # Convert prediction to text
+    predicted_indices = np.argmax(predicted_seq, axis=-1)
+    predicted_text = tokenizer.sequences_to_texts(predicted_indices)[0]
+
+    return predicted_text.replace("<start>", "").replace("<end>", "").strip()
