@@ -27,3 +27,11 @@ def generate_response(user_input):
     predicted_text = tokenizer.sequences_to_texts(predicted_indices)[0]
 
     return predicted_text.replace("<start>", "").replace("<end>", "").strip()
+
+st.title("Chatbot - Trained on 10,000 Entries")
+
+user_input = st.text_input("You:", "")
+
+if st.button("Send"):
+    response = generate_response(user_input)
+    st.text_area("Bot:", response, height=100)
